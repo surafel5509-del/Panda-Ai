@@ -22,12 +22,11 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.pandaai.studio"
-        // minSdk 23 is required by flutter_secure_storage's encrypted
-        // SharedPreferences (Android Keystore-backed token storage).
-        // NOTE: kept in a variable — Flutter 3.35's MinSdkVersionMigration
-        // rewrites literal "minSdk = <int>" lines to Groovy syntax, which
-        // is invalid in this .kts file.
-        val appMinSdk = 23
+        // minSdk 24 is required by shared_preferences_android (current
+        // versions); flutter_secure_storage works fully on 24+.
+        // NOTE: kept in a variable — Flutter's MinSdkVersionMigration
+        // rewrites literal "minSdk = <int>" lines.
+        val appMinSdk = 24
         minSdk = appMinSdk
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
