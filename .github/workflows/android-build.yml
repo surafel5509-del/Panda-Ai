@@ -1,0 +1,103 @@
+name: Android Build
+
+on:
+  push:
+    branches: [main, 'arena/**']
+  pull_request:
+  workflow_dispatch:
+
+env:
+  FLUTTER_VERSION: '3.35.0'
+
+jobs:
+  # ---------------------------------------------------------------------
+  # 1. Static analysis + unit tests
+  # ---------------------------------------------------------------------
+  test:
+    name: Analyze & test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Flutter doctor
+        run: flutter doctor -v
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Analyze
+        run: flutter analyze
+
+      - name: Run tests
+        run: flutter test --coverage
+
+      - name: Upload coverage
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage
+          path: coverage/lcov.info
+          if-no-files-found: ignore
+          retention-days: 7
+
+  # ---------------------------------------------------------------------
+  # 2. Build the Android APK (release + debug)
+  # ---------------------------------------------------------------------
+  build-apk:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+    needs: test
+    timeout-minutes: 40
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Build release APK
+        run: flutter build apk --release
+
+      - name: Build debug APK
+        run: flutter build apk --debug
+
+      - name: Rename artifacts
+        run: |
+          cp android/app/build/outputs/flutter-apk/app-release.apk \
+             android/app/build/outputs/flutter-apk/PandaAiStudio-1.0.0-release.apk
+          cp android/app/build/outputs/flutter-apk/app-debug.apk \
+             android/app/build/outputs/flutter-apk/PandaAiStudio-1.0.0-debug.apk
+
+      - name: Upload APKs
+        uses: actions/upload-artifact@v4
+        with:
+          name: panda-ai-studio-apk
+          path: |
+            android/app/build/outputs/flutter-apk/PandaAiStudio-1.0.0-release.apk
+            android/app/build/outputs/flutter-apk/PandaAiStudio-1.0.0-debug.apk
+          retention-days: 30
+
+      - name: APK sizes
+        run: ls -lh android/app/build/outputs/flutter-apk/*.apk
