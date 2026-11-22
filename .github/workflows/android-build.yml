@@ -42,7 +42,7 @@ jobs:
         continue-on-error: true
 
       - name: Publish analysis results
-        if: always() && steps.analyze.outcome != 'success'
+        if: always() && steps.analyze.outcome == 'failure'
         run: |
           {
             echo "## 🔍 flutter analyze failed"
