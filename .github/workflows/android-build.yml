@@ -101,28 +101,27 @@ jobs:
         id: release_apk
         run: |
           set -o pipefail
-          flutter build apk --release --verbose 2>&1 | tee build-release.log
+          flutter build apk --release 2>&1 | tee build-release.log
         continue-on-error: true
 
       - name: Publish release build results
         if: always() && steps.release_apk.outcome == 'failure'
         run: |
-          # Annotate the most relevant error region (Gradle failure block)
-          grep -n -A6 -B4 -iE 'FAILURE:|error|exception|e: ' build-release.log \
-            | head -n 100 \
-            | while IFS= read -r line; do
-                escaped="${line//%/％25}"
-                echo "::error::${escaped}"
-              done
-          echo "::error::----- FULL LOG TAIL -----"
-          tail -n 60 build-release.log | while IFS= read -r line; do
-            escaped="${line//%/％25}"
-            echo "::error::${escaped}"
-          done
+          # One single annotation (max ~10 per step are surfaced, so pack
+          # the Gradle failure block into a single message).
+          if grep -q 'FAILURE:' build-release.log; then
+            block=$(grep -B8 -A45 'FAILURE:' build-release.log | head -n 70)
+          else
+            block=$(tail -n 70 build-release.log)
+          fi
+          block="${block//'%'/'%25'}"
+          block="${block//$'\r'/}"
+          block="${block//$'\n'/'%0A'}"
+          echo "::error::$block"
           {
             echo "## ❌ Release APK build failed"
             echo '```'
-            tail -n 400 build-release.log
+            tail -n 300 build-release.log
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
           exit 1
