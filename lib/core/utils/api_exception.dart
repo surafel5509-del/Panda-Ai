@@ -45,27 +45,27 @@ class ApiException implements Exception {
           statusCode: statusCode,
         );
       case 429:
-        return const ApiException(
+        return ApiException(
           'Your request limit has been reached. Please wait a moment and '
           'try again.',
           statusCode: statusCode,
           retryable: true,
         );
       case 502:
-        return const ApiException(
+        return ApiException(
           'The voice provider returned an error. Please retry.',
           statusCode: statusCode,
           retryable: true,
         );
       case 503:
-        return const ApiException(
+        return ApiException(
           'The voice service is temporarily unavailable. Please retry in a '
           'moment.',
           statusCode: statusCode,
           retryable: true,
         );
       case 504:
-        return const ApiException(
+        return ApiException(
           'The request timed out. Please check your connection and retry.',
           statusCode: statusCode,
           retryable: true,
