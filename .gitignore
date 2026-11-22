@@ -1,0 +1,53 @@
+# Flutter / Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+build/
+.pub-cache/
+.pub/
+coverage/
+
+# Android
+android/local.properties
+android/app/debug
+android/app/profile
+android/app/release
+android/.gradle/
+android/captures/
+android/.externalNativeBuild/
+android/.cxx/
+
+# iOS
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/Flutter/Generated.xcconfig
+ios/Flutter/ephemeral/
+ios/Flutter/Flutter-*.xcframework
+
+# macOS / Linux / Windows
+macos/Pods/
+macos/Flutter/Flutter-*.xcframework
+linux/flutter/ephemeral/
+windows/flutter/ephemeral/
+
+# IDE
+.idea/
+*.iml
+.vscode/settings.json
+
+# OS / misc
+.DS_Store
+Thumbs.db
+
+# Secrets — API tokens must NEVER be committed.
+.env
+.env.*
+!.env.example
+*.jks
+*.keystore
+key.properties
+GoogleService-Info.plist
+google-services.json

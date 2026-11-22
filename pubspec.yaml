@@ -1,0 +1,40 @@
+name: panda_ai_studio
+description: "PANDA AI STUDIO — Premium AI Voice & Chat Platform. Your Voice. Your Intelligence."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.7.0 <4.0.0'
+  flutter: '>=3.29.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  # Networking
+  http: ^1.2.2
+  # State management
+  provider: ^6.1.2
+  # Secure API token storage (Keychain / Keystore) + plain preferences
+  flutter_secure_storage: ^9.2.4
+  shared_preferences: ^2.3.3
+  # Local audio files
+  path_provider: ^2.1.5
+  # Audio playback (MP3 preview / generation playback)
+  audioplayers: ^6.1.2
+  # Native share sheet (downloaded / generated audio)
+  share_plus: ^10.1.4
+  # Dates / numbers
+  intl: ^0.19.0
+  # Typography
+  google_fonts: ^6.2.1
+  # Micro-animations
+  flutter_animate: ^4.5.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
