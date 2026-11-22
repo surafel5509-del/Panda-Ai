@@ -131,19 +131,19 @@ jobs:
 
       - name: Rename artifacts
         run: |
-          cp android/app/build/outputs/flutter-apk/app-release.apk \
-             android/app/build/outputs/flutter-apk/PandaAiStudio-1.0.0-release.apk
-          cp android/app/build/outputs/flutter-apk/app-debug.apk \
-             android/app/build/outputs/flutter-apk/PandaAiStudio-1.0.0-debug.apk
+          cp build/app/outputs/flutter-apk/app-release.apk \
+             build/app/outputs/flutter-apk/PandaAiStudio-1.0.0-release.apk
+          cp build/app/outputs/flutter-apk/app-debug.apk \
+             build/app/outputs/flutter-apk/PandaAiStudio-1.0.0-debug.apk
 
       - name: Upload APKs
         uses: actions/upload-artifact@v4
         with:
           name: panda-ai-studio-apk
           path: |
-            android/app/build/outputs/flutter-apk/PandaAiStudio-1.0.0-release.apk
-            android/app/build/outputs/flutter-apk/PandaAiStudio-1.0.0-debug.apk
+            build/app/outputs/flutter-apk/PandaAiStudio-1.0.0-release.apk
+            build/app/outputs/flutter-apk/PandaAiStudio-1.0.0-debug.apk
           retention-days: 30
 
       - name: APK sizes
-        run: ls -lh android/app/build/outputs/flutter-apk/*.apk
+        run: ls -lh build/app/outputs/flutter-apk/*.apk
