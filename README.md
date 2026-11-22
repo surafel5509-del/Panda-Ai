@@ -2,7 +2,22 @@
 
 **Your Voice. Your Intelligence.**
 
+[![Android Build](https://github.com/surafel5509-del/Panda-Ai/actions/workflows/android-build.yml/badge.svg)](https://github.com/surafel5509-del/Panda-Ai/actions/workflows/android-build.yml)
+
 A premium monochrome mobile app for the [Panda Voice AI](https://panda-voice-ai-production.up.railway.app) platform — AI text-to-speech and AI chat, built with **Flutter/Dart** for Android and iOS.
+
+## Download the APK (CI-built)
+
+Every push builds the app in GitHub Actions (`flutter analyze` + `flutter test` + release/debug APK):
+
+1. Open [**Actions → Android Build**](https://github.com/surafel5509-del/Panda-Ai/actions/workflows/android-build.yml)
+2. Click the latest ✅ successful run
+3. Download the **`panda-ai-studio-apk`** artifact (bottom of the page)
+4. Unzip — inside are `PandaAiStudio-1.0.0-release.apk` and `…-debug.apk`
+5. Install on your Android device (allow "install from unknown sources" once)
+
+> The release APK is signed with the debug key for easy installation.
+> Add your own `key.properties` signing config before Play Store release.
 
 <p align="center">
   <img src="ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-1024x1024@1x.png" width="160" alt="PANDA AI STUDIO icon">
