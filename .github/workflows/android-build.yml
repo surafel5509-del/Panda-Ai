@@ -44,6 +44,11 @@ jobs:
       - name: Publish analysis results
         if: always() && steps.analyze.outcome == 'failure'
         run: |
+          # Mirror analyzer findings as workflow annotations (readable via API)
+          while IFS= read -r line; do
+            escaped="${line//%/％25}"
+            echo "::error::${escaped}"
+          done < analyze.log
           {
             echo "## 🔍 flutter analyze failed"
             echo '```'
