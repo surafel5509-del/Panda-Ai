@@ -35,7 +35,22 @@ jobs:
         run: flutter pub get
 
       - name: Analyze
-        run: flutter analyze --no-fatal-warnings --no-fatal-infos
+        id: analyze
+        run: |
+          set -o pipefail
+          flutter analyze --no-fatal-warnings --no-fatal-infos 2>&1 | tee analyze.log
+        continue-on-error: true
+
+      - name: Publish analysis results
+        if: always() && steps.analyze.outcome != 'success'
+        run: |
+          {
+            echo "## 🔍 flutter analyze failed"
+            echo '```'
+            tail -n 120 analyze.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit 1
 
       - name: Run tests
         run: flutter test --coverage
