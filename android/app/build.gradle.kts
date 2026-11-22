@@ -24,7 +24,11 @@ android {
         applicationId = "com.pandaai.studio"
         // minSdk 23 is required by flutter_secure_storage's encrypted
         // SharedPreferences (Android Keystore-backed token storage).
-        minSdk = 23
+        // NOTE: kept in a variable — Flutter 3.35's MinSdkVersionMigration
+        // rewrites literal "minSdk = <int>" lines to Groovy syntax, which
+        // is invalid in this .kts file.
+        val appMinSdk = 23
+        minSdk = appMinSdk
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
