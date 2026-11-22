@@ -98,7 +98,26 @@ jobs:
         run: flutter pub get
 
       - name: Build release APK
-        run: flutter build apk --release
+        id: release_apk
+        run: |
+          set -o pipefail
+          flutter build apk --release 2>&1 | tee build-release.log
+        continue-on-error: true
+
+      - name: Publish release build results
+        if: always() && steps.release_apk.outcome == 'failure'
+        run: |
+          while IFS= read -r line; do
+            escaped="${line//%/％25}"
+            echo "::error::${escaped}"
+          done < <(tail -n 120 build-release.log)
+          {
+            echo "## ❌ Release APK build failed"
+            echo '```'
+            tail -n 200 build-release.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit 1
 
       - name: Build debug APK
         run: flutter build apk --debug
